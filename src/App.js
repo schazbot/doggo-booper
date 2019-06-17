@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import Card from "./components/Card"
+import "./App.css"
 
-function App() {
+class App extends Component {
+  state = {
+    currentDogPicUrl: "",
+    boopStatus: ""
+  }
+
+  componentDidMount() {
+    this.getDogPics()
+  }
+
+  getDogPics = () => {
+    return fetch("https://dog.ceo/api/breeds/image/random/4")
+      .then(resp => resp.json()).then(data => this.setState({
+        currentDogPicUrl: data.message[0],
+        boopStatus: ""
+      }))
+  }
+
+  setBoop = () => {
+    this.setState({ boopStatus: "Boop!" })
+  }
+
+
+render() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="app-container">
+        <div className="header">
+          <h1>Boop the puppy on the nose</h1>
+          <Card currentDogPicUrl={this.state.currentDogPicUrl} getDogPics={this.getDogPics} boopStatus={this.state.boopStatus} setBoop={this.setBoop} />
+        </div>
+      </div>
+    </>
   );
 }
 
+}
 export default App;
+
