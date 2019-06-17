@@ -14,7 +14,8 @@ class App extends Component {
 
   getDogPics = () => {
     return fetch("https://dog.ceo/api/breeds/image/random/4")
-      .then(resp => resp.json()).then(data => this.setState({
+      .then(resp => resp.json())
+      .then(data => this.setState({
         currentDogPicUrl: data.message[0],
         boopStatus: ""
       }))
