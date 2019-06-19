@@ -21,23 +21,40 @@ class App extends Component {
       }))
   }
 
+  saveDogPics = e => {
+    e.preventDefault();
+    fetch("tcp://localhost:3001", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        url: this.state.currentDogPicUrl,
+        user_id: 1
+      })
+    })
+      .then(resp => resp.json())
+  }
+
   setBoop = () => {
     this.setState({ boopStatus: "Boop!" })
   }
 
 
-render() {
-  return (
-    <>
-      <div className="app-container">
-        <div className="header">
-          <h1>Boop the puppy on the nose</h1>
-          <Card currentDogPicUrl={this.state.currentDogPicUrl} getDogPics={this.getDogPics} boopStatus={this.state.boopStatus} setBoop={this.setBoop} />
+  render() {
+    return (
+      <>
+        <div className="app-container">
+          <div className="header">
+            <h1>Boop the puppy on the nose</h1>
+            <Card currentDogPicUrl={this.state.currentDogPicUrl} getDogPics={this.getDogPics} boopStatus={this.state.boopStatus} setBoop={this.setBoop} />
+            <button onclick={this.saveDogPics()}>save pupper</button>
+          </div>
         </div>
-      </div>
-    </>
-  );
-}
+      </>
+    );
+  }
 
 }
 export default App;
