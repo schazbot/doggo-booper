@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Card from "./components/Card"
+import NavBar from "./components/NavBar"
 import "./App.css"
 import MyPups from './containers/MyPups';
+import { Route } from "react-router-dom";
+
 
 const DOGAPI = "https://dog.ceo/api/breeds/image/random/4"
 const MYDOGSURL = "http://localhost:3001/dogs/"
@@ -49,11 +52,11 @@ class App extends Component {
       })
     })
       .then(resp => resp.json())
-      .then(newDoggo => this.setState({allMyPups: [...this.state.allMyPups, newDoggo]}))
+      .then(newDoggo => this.setState({ allMyPups: [...this.state.allMyPups, newDoggo] }))
   }
 
   deleteDogPic = dog => {
-    fetch( MYDOGSURL + `${dog.id}`, { method: "DELETE" }).then(this.setState({
+    fetch(MYDOGSURL + `${dog.id}`, { method: "DELETE" }).then(this.setState({
       allMyPups: this.state.allMyPups.filter(doggo => doggo.id !== dog.id)
     }))
   }
@@ -69,15 +72,29 @@ class App extends Component {
     return (
       <>
         <div className="app-container">
+          <NavBar/>
+          <h1>Boop the puppy on the nose</h1>
           <div className="header">
-            <h1>Boop the puppy on the nose</h1>
-            <Card currentDogPicUrl={this.state.currentDogPicUrl}
-              getDogPics={this.getDogPics}
-              boopStatus={this.state.boopStatus}
-              setBoop={this.setBoop} />
+            <Route exact
+              path="/"
+              render={() => {
+                return (<>
+                  <Card currentDogPicUrl={this.state.currentDogPicUrl}
+                    getDogPics={this.getDogPics}
+                    boopStatus={this.state.boopStatus}
+                    setBoop={this.setBoop} />
 
-            <button onClick={this.saveDogPics}>save pupper</button>
-            <MyPups allMyPups={this.state.allMyPups} deleteDogPic={this.deleteDogPic} />
+                  <button onClick={this.saveDogPics}>save pupper</button>
+                </>)
+              }} />
+            <Route exact
+              path="/dogs"
+              render={() => {
+                return (<>
+                  <MyPups allMyPups={this.state.allMyPups} deleteDogPic={this.deleteDogPic} />
+                </>)
+              }} />
+
 
           </div>
         </div>

@@ -11,7 +11,8 @@ class PupCard extends Component {
                 <img
                     src={pup.url}
                     key={pup.id}
-                    width="100%" alt="doggo pics"
+                    width="100%" 
+                    alt="doggo pics"
                     onClick={setBoop} />
 
                 <button onClick={() => deleteDogPic(pup)}>buh-bye pup</button>
