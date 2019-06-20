@@ -1,19 +1,25 @@
 import React, { Component } from 'react';
 import Card from "./components/Card"
 import "./App.css"
+import MyPups from './containers/MyPups';
+
+const DOGAPI = "https://dog.ceo/api/breeds/image/random/4"
+const MYDOGSURL = "http://localhost:3001/dogs/"
 
 class App extends Component {
   state = {
     currentDogPicUrl: "",
-    boopStatus: ""
+    boopStatus: "",
+    allMyPups: []
   }
 
   componentDidMount() {
     this.getDogPics()
+    this.getMyPups()
   }
 
   getDogPics = () => {
-    return fetch("https://dog.ceo/api/breeds/image/random/4")
+    return fetch(DOGAPI)
       .then(resp => resp.json())
       .then(data => this.setState({
         currentDogPicUrl: data.message[0],
@@ -21,9 +27,17 @@ class App extends Component {
       }))
   }
 
+  getMyPups = () => {
+    return fetch(MYDOGSURL)
+      .then(resp => resp.json())
+      .then(data => this.setState({
+        allMyPups: data
+      }))
+  }
+
   saveDogPics = e => {
     e.preventDefault();
-    fetch("tcp://localhost:3001", {
+    fetch(MYDOGSURL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,7 +49,16 @@ class App extends Component {
       })
     })
       .then(resp => resp.json())
+      .then(newDoggo => this.setState({allMyPups: [...this.state.allMyPups, newDoggo]}))
   }
+
+  deleteDogPic = dog => {
+    fetch( MYDOGSURL + `${dog.id}`, { method: "DELETE" }).then(this.setState({
+      allMyPups: this.state.allMyPups.filter(doggo => doggo.id !== dog.id)
+    }))
+  }
+
+
 
   setBoop = () => {
     this.setState({ boopStatus: "Boop!" })
@@ -48,8 +71,14 @@ class App extends Component {
         <div className="app-container">
           <div className="header">
             <h1>Boop the puppy on the nose</h1>
-            <Card currentDogPicUrl={this.state.currentDogPicUrl} getDogPics={this.getDogPics} boopStatus={this.state.boopStatus} setBoop={this.setBoop} />
-            <button onclick={this.saveDogPics()}>save pupper</button>
+            <Card currentDogPicUrl={this.state.currentDogPicUrl}
+              getDogPics={this.getDogPics}
+              boopStatus={this.state.boopStatus}
+              setBoop={this.setBoop} />
+
+            <button onClick={this.saveDogPics}>save pupper</button>
+            <MyPups allMyPups={this.state.allMyPups} deleteDogPic={this.deleteDogPic} />
+
           </div>
         </div>
       </>

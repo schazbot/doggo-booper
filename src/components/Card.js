@@ -3,11 +3,14 @@ class Card extends Component {
 
 
     render() {
+        const { currentDogPicUrl, setBoop, getDogPics, boopStatus } = this.props
         return (
+
             <div className="card">
-                <img src={this.props.currentDogPicUrl}  width="100%" alt="doggo pics" onClick={this.props.setBoop}/>
-                <button onClick={this.props.getDogPics}>Next pupper</button>
-                <div id="boop-div"><h1>{this.props.boopStatus}</h1></div>
+                <img src={currentDogPicUrl} width="100%" alt="doggo pics" onClick={setBoop}
+                 />
+                <button onClick={getDogPics}>Next pupper</button>
+                <div id="boop-div"><h1>{boopStatus}</h1></div>
             </div>
         );
     }
