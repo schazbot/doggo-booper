@@ -8,17 +8,27 @@ import { Route } from "react-router-dom";
 
 const DOGAPI = "https://dog.ceo/api/breeds/image/random/4"
 const MYDOGSURL = "http://localhost:3001/dogs/"
+const NAMEURL = "https://api.randomuser.me/"
 
 class App extends Component {
   state = {
     currentDogPicUrl: "",
-    boopStatus: "",
+    currentDogName: "",
     allMyPups: []
   }
 
   componentDidMount() {
     this.getDogPics()
+    this.getRandomName()
     this.getMyPups()
+  }
+
+  getRandomName = () => {
+    return fetch(NAMEURL)
+      .then(resp => resp.json())
+      .then(data => this.setState({
+        currentDogName: data.results[0].name.first
+      }))
   }
 
   getDogPics = () => {
@@ -27,8 +37,10 @@ class App extends Component {
       .then(data => this.setState({
         currentDogPicUrl: data.message[0],
         boopStatus: ""
-      }))
+
+      })).then(this.getRandomName())
   }
+
 
   getMyPups = () => {
     return fetch(MYDOGSURL)
@@ -48,11 +60,13 @@ class App extends Component {
       },
       body: JSON.stringify({
         url: this.state.currentDogPicUrl,
+        name: this.state.currentDogName,
         user_id: 1
       })
     })
       .then(resp => resp.json())
       .then(newDoggo => this.setState({ allMyPups: [...this.state.allMyPups, newDoggo] }))
+    debugger
   }
 
   deleteDogPic = dog => {
@@ -69,29 +83,32 @@ class App extends Component {
 
 
   render() {
+    const { getDogPics, setBoop, deleteDogPic, saveDogPics } = this
+    const { currentDogName, boopStatus, currentDogPicUrl, allMyPups } = this.state
     return (
       <>
         <div className="app-container">
-          <NavBar/>
+          <NavBar />
           <h1>Boop the puppy on the nose</h1>
           <div className="header">
             <Route exact
               path="/"
               render={() => {
                 return (<>
-                  <Card currentDogPicUrl={this.state.currentDogPicUrl}
-                    getDogPics={this.getDogPics}
-                    boopStatus={this.state.boopStatus}
-                    setBoop={this.setBoop} />
+                  <Card currentDogPicUrl={currentDogPicUrl}
+                    currentDogName={currentDogName}
+                    getDogPics={getDogPics}
+                    boopStatus={boopStatus}
+                    setBoop={setBoop} />
 
-                  <button onClick={this.saveDogPics}>save pupper</button>
+                  <button onClick={saveDogPics}>save pupper</button>
                 </>)
               }} />
             <Route exact
               path="/dogs"
               render={() => {
                 return (<>
-                  <MyPups allMyPups={this.state.allMyPups} deleteDogPic={this.deleteDogPic} />
+                  <MyPups allMyPups={allMyPups} deleteDogPic={deleteDogPic} />
                 </>)
               }} />
 
