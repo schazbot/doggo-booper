@@ -18,8 +18,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.getDogPics()
-    this.getRandomName()
+    this.getDogPics();
     this.getMyPups()
   }
 
@@ -37,7 +36,6 @@ class App extends Component {
       .then(data => this.setState({
         currentDogPicUrl: data.message[0],
         boopStatus: ""
-
       })).then(this.getRandomName())
   }
 
@@ -66,7 +64,19 @@ class App extends Component {
     })
       .then(resp => resp.json())
       .then(newDoggo => this.setState({ allMyPups: [...this.state.allMyPups, newDoggo] }))
-    debugger
+  }
+
+  updateDog = pup => {
+    fetch(MYDOGSURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        boops: pup.boops
+      })
+    })
   }
 
   deleteDogPic = dog => {
@@ -77,13 +87,16 @@ class App extends Component {
 
 
 
-  setBoop = () => {
+  setBoop = (pup) => {
+    this.updateDog(pup)
     this.setState({ boopStatus: "Boop!" })
   }
 
 
+
+
   render() {
-    const { getDogPics, setBoop, deleteDogPic, saveDogPics } = this
+    const { getDogPics, setBoop, deleteDogPic, saveDogPics, updateDog } = this
     const { currentDogName, boopStatus, currentDogPicUrl, allMyPups } = this.state
     return (
       <>
@@ -108,7 +121,7 @@ class App extends Component {
               path="/dogs"
               render={() => {
                 return (<>
-                  <MyPups allMyPups={allMyPups} deleteDogPic={deleteDogPic} />
+                  <MyPups updateDog={updateDog} allMyPups={allMyPups} deleteDogPic={deleteDogPic} />
                 </>)
               }} />
 
