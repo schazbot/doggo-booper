@@ -12,8 +12,8 @@ class PupCard extends Component {
 
     
     render() {
-        const { deleteDogPic, pup } = this.props
-        const { setBoop } = this
+        const { deleteDogPic, pup, updateDog } = this.props
+        
         const {boopStatus} = this.state
         return (
             <div className="pup-card">
@@ -24,7 +24,7 @@ class PupCard extends Component {
                     key={pup.id}
                     width="100%"
                     alt="doggo pics"
-                    onClick={() => setBoop(pup)} />
+                    onClick={() => updateDog(pup)} />
                 <div id="boop-div"><h1>{boopStatus}</h1></div>
                 <button onClick={() => deleteDogPic(pup)}>buh-bye pup</button>
 

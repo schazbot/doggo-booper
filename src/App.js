@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar"
 import "./App.css"
 import MyPups from './containers/MyPups';
 import { Route } from "react-router-dom";
+import UploadWidget from './components/UploadWidget';
 
 
 const DOGAPI = "https://dog.ceo/api/breeds/image/random/4"
@@ -14,7 +15,8 @@ class App extends Component {
   state = {
     currentDogPicUrl: "",
     currentDogName: "",
-    allMyPups: []
+    allMyPups: [],
+    uploadedDogPic: ""
   }
 
   componentDidMount() {
@@ -67,32 +69,25 @@ class App extends Component {
   }
 
   updateDog = pup => {
-    fetch(MYDOGSURL, {
-      method: "POST",
+    fetch(MYDOGSURL + `${pup.id}`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json"
       },
       body: JSON.stringify({
-        boops: pup.boops
+        boops: pup.boops++
       })
     })
   }
+
+
 
   deleteDogPic = dog => {
     fetch(MYDOGSURL + `${dog.id}`, { method: "DELETE" }).then(this.setState({
       allMyPups: this.state.allMyPups.filter(doggo => doggo.id !== dog.id)
     }))
   }
-
-
-
-  setBoop = (pup) => {
-    this.updateDog(pup)
-    this.setState({ boopStatus: "Boop!" })
-  }
-
-
 
 
   render() {
@@ -122,6 +117,14 @@ class App extends Component {
               render={() => {
                 return (<>
                   <MyPups updateDog={updateDog} allMyPups={allMyPups} deleteDogPic={deleteDogPic} />
+
+                </>)
+              }} />
+            <Route exact
+              path="/upload"
+              render={() => {
+                return (<>
+                  <UploadWidget currentDogName={currentDogName} />
                 </>)
               }} />
 

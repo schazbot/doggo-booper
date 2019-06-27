@@ -17,6 +17,8 @@ class NavBar extends Component {
     return(<>
         <Link style={styling} to="/">Home</Link>
         <Link style={styling} to="/dogs">All Your Dogs</Link>
+        <Link style={styling} to="/upload">Upload Some Dogs</Link>
+
         </>
         );
     }
