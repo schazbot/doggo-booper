@@ -14,27 +14,30 @@ class UploadWidget extends Component {
 
     uploadDogPic = () => {
         if (this.state.dogUrl) {
-            fetch(MYDOGSURL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json"
-                },
-                body: JSON.stringify({
-                    url: this.state.url,
-                    name: this.props.currentDogName,
-                    user_id: 1
-                })
-            })
-        } else {console.log("nope")}
+
+        } else { console.log("nope") }
 
     }
 
     render() {
+        const { currentDogName } = this.props
         const widget = window.cloudinary.openUploadWidget({
             cloudName: "dmn1rk00r", uploadPreset: "jyzlvdex"
         }, (error, result) => {
-            if (result.event === 'success') { this.setState({ dogUrl: result.info.url }) }
+            if (result.event === 'success') {
+                fetch(MYDOGSURL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json"
+                    },
+                    body: JSON.stringify({
+                        url: result.info.url,
+                        name: currentDogName,
+                        user_id: 1
+                    })
+                })
+            }
             else { console.log(error) }
         });
 
