@@ -9,7 +9,7 @@ import UploadWidget from './components/UploadWidget';
 
 
 const DOGAPI = "https://dog.ceo/api/breeds/image/random/4"
-const MYDOGSURL = "http://localhost:3000/dogs/"
+const MYDOGSURL = "http://localhost:3001/dogs/"
 const NAMEURL = "https://api.randomuser.me/"
 
 class App extends Component {
