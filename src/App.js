@@ -1,54 +1,73 @@
-import React, { Component } from 'react';
-import Card from "./components/Card"
-import NavBar from "./components/NavBar"
-import "./App.css"
-import MyPups from './containers/MyPups';
+import React, { Component } from "react";
+import Card from "./components/Card";
+import NavBar from "./components/NavBar";
+import "./App.css";
+import MyPups from "./containers/MyPups";
 import { Route } from "react-router-dom";
-import UploadWidget from './components/UploadWidget';
+import UploadWidget from "./components/UploadWidget";
+import AuthForm from "./components/AuthForm";
 
-
-const DOGAPI = "https://dog.ceo/api/breeds/image/random/4"
-const MYDOGSURL = "http://localhost:3001/dogs/"
-const NAMEURL = "https://api.randomuser.me/"
+const DOGAPI = "https://dog.ceo/api/breeds/image/random/4";
+const MYDOGSURL = "http://localhost:3001/dogs/";
+const NAMEURL = "https://api.randomuser.me/";
 
 class App extends Component {
   state = {
     currentDogPicUrl: "",
     currentDogName: "",
     allMyPups: [],
-    uploadedDogPic: ""
-  }
+    uploadedDogPic: "",
+    username: ""
+  };
+
+  signIn = username => {
+    this.setState({
+      username
+    });
+  };
+
+  signOut = () => {
+    this.setState({
+      username: ""
+    });
+  };
 
   componentDidMount() {
     this.getDogPics();
-    this.getMyPups()
+    this.getMyPups();
   }
 
   getRandomName = () => {
     return fetch(NAMEURL)
       .then(resp => resp.json())
-      .then(data => this.setState({
-        currentDogName: data.results[0].name.first
-      }))
-  }
+      .then(data =>
+        this.setState({
+          currentDogName: data.results[0].name.first
+        })
+      );
+  };
 
   getDogPics = () => {
     return fetch(DOGAPI)
       .then(resp => resp.json())
-      .then(data => this.setState({
-        currentDogPicUrl: data.message[0],
-        boopStatus: ""
-      })).then(this.getRandomName())
-  }
-
+      .then(data =>
+        this.setState({
+          currentDogPicUrl: data.message[0],
+          boopStatus: ""
+        })
+      )
+      .then(this.getRandomName());
+  };
 
   getMyPups = () => {
     return fetch(MYDOGSURL)
       .then(resp => resp.json())
-      .then(data => this.setState({
-        allMyPups: data
-      }))
-  }
+      .then(data =>
+        this.setState({
+          allMyPups: data
+        })
+      );
+  };
 
   saveDogPics = e => {
     e.preventDefault();
@@ -65,8 +84,10 @@ class App extends Component {
       })
     })
       .then(resp => resp.json())
-      .then(newDoggo => this.setState({ allMyPups: [...this.state.allMyPups, newDoggo] }))
-  }
+      .then(newDoggo =>
+        this.setState({ allMyPups: [...this.state.allMyPups, newDoggo] })
+      );
+  };
 
   updateDog = pup => {
     fetch(MYDOGSURL + `${pup.id}`, {
@@ -78,63 +99,92 @@ class App extends Component {
       body: JSON.stringify({
         boops: pup.boops++
       })
-    })
-  }
-
-
+    });
+  };
 
   deleteDogPic = dog => {
-    fetch(MYDOGSURL + `${dog.id}`, { method: "DELETE" }).then(this.setState({
-      allMyPups: this.state.allMyPups.filter(doggo => doggo.id !== dog.id)
-    }))
-  }
-
+    fetch(MYDOGSURL + `${dog.id}`, { method: "DELETE" }).then(
+      this.setState({
+        allMyPups: this.state.allMyPups.filter(doggo => doggo.id !== dog.id)
+      })
+    );
+  };
 
   render() {
-    const { getDogPics, setBoop, deleteDogPic, saveDogPics, updateDog } = this
-    const { currentDogName, boopStatus, currentDogPicUrl, allMyPups } = this.state
+    const { getDogPics, setBoop, deleteDogPic, saveDogPics, updateDog } = this;
+    const {
+      currentDogName,
+      boopStatus,
+      currentDogPicUrl,
+      allMyPups
+    } = this.state;
+
     return (
       <>
         <div className="app-container">
           <NavBar />
           <h1>Boop the puppy on the nose</h1>
           <div className="header">
-            <Route exact
+            <Route
+              path="/signin"
+              component={routerProps => (
+                <AuthForm
+                  {...routerProps}
+                  signIn={this.signIn}
+                  signOut={this.signOut}
+                />
+              )}
+            />
+
+            <Route
+              exact
               path="/"
               render={() => {
-                return (<>
-                  <Card currentDogPicUrl={currentDogPicUrl}
-                    currentDogName={currentDogName}
-                    getDogPics={getDogPics}
-                    boopStatus={boopStatus}
-                    setBoop={setBoop} />
+                return (
+                  <>
+                    <Card
+                      currentDogPicUrl={currentDogPicUrl}
+                      currentDogName={currentDogName}
+                      getDogPics={getDogPics}
+                      boopStatus={boopStatus}
+                      setBoop={setBoop}
+                    />
 
-                  <button onClick={saveDogPics}>save pupper</button>
-                </>)
-              }} />
-            <Route exact
+                    <button onClick={saveDogPics}>save pupper</button>
+                  </>
+                );
+              }}
+            />
+            <Route
+              exact
               path="/dogs"
               render={() => {
-                return (<>
-                  <MyPups updateDog={updateDog} allMyPups={allMyPups} deleteDogPic={deleteDogPic} />
-
-                </>)
-              }} />
-            <Route exact
+                return (
+                  <>
+                    <MyPups
+                      updateDog={updateDog}
+                      allMyPups={allMyPups}
+                      deleteDogPic={deleteDogPic}
+                    />
+                  </>
+                );
+              }}
+            />
+            <Route
+              exact
               path="/upload"
               render={() => {
-                return (<>
-                  <UploadWidget currentDogName={currentDogName} />
-                </>)
-              }} />
-
-
+                return (
+                  <>
+                    <UploadWidget currentDogName={currentDogName} />
+                  </>
+                );
+              }}
+            />
           </div>
         </div>
       </>
     );
   }
-
 }
 export default App;
-
