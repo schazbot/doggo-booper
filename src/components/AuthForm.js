@@ -8,11 +8,13 @@ class AuthForm extends Component {
   };
 
   handleChange = event =>
-    this.setState({ [event.target.name]: event.target.value });
-
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+g
   handleSubmit = event => {
     event.preventDefault();
-      API.signIn(this.state.username, this.state.password)
+    API.signIn(this.state.username, this.state.password)
       .then(data => {
         // check if we got an error back
         if (data.error) throw Error(data.error);

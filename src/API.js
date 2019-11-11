@@ -45,5 +45,6 @@ export default {
   signIn,
   validate,
   dogPic,
-  getName
+  getName,
+  patch
 };
