@@ -6,6 +6,7 @@ import MyPups from "./containers/MyPups";
 import { Route } from "react-router-dom";
 import UploadWidget from "./components/UploadWidget";
 import AuthForm from "./components/AuthForm";
+import API from "./API";
 
 const DOGAPI = "https://dog.ceo/api/breeds/image/random/4";
 const MYDOGSURL = "http://localhost:3001/dogs/";
@@ -20,19 +21,24 @@ class App extends Component {
     username: ""
   };
 
-  signIn = username => {
+  signIn = user => {
     this.setState({
-      username
+      username: user.username
     });
+    localStorage.setItem("token", user.token);
   };
 
   signOut = () => {
     this.setState({
       username: ""
     });
+    localStorage.removeItem("token");
   };
 
   componentDidMount() {
+    const token = localStorage.getItem("token");
+    if (token) {
+    }
     this.getDogPics();
     this.getMyPups();
   }
@@ -60,8 +66,7 @@ class App extends Component {
   };
 
   getMyPups = () => {
-    return fetch(MYDOGSURL)
-      .then(resp => resp.json())
+    API.get(MYDOGSURL)
       .then(data =>
         this.setState({
           allMyPups: data

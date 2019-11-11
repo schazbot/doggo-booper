@@ -10,14 +10,15 @@ class AuthForm extends Component {
   handleChange = event =>
     this.setState({ [event.target.name]: event.target.value });
 
-    handleSubmit = () => {
-    API.signIn(this.state.username, this.state.password)
+  handleSubmit = event => {
+    event.preventDefault();
+      API.signIn(this.state.username, this.state.password)
       .then(data => {
         // check if we got an error back
-        if (data.error) throw Error(data.error)
+        if (data.error) throw Error(data.error);
         // here we know for sure that there was no error
-          this.props.signIn(data.username);
-          this.props.history.push('/dogs')
+        this.props.signIn(data);
+        this.props.history.push("/mydogs");
       })
       .catch(error => console.log(error));
   };
@@ -25,9 +26,9 @@ class AuthForm extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.onSubmit}>
+        <form onSubmit={this.handleSubmit}>
           <label>
-              Username
+            Username
             <input
               onChange={this.handleChange}
               type="text"
@@ -36,7 +37,7 @@ class AuthForm extends Component {
             />
           </label>
           <label>
-              Password
+            Password
             <input
               onChange={this.handleChange}
               type="password"
@@ -44,7 +45,7 @@ class AuthForm extends Component {
               value={this.state.password}
             />
           </label>
-                <button onClick={() => this.props.signIn(this.state.username)}>Log In</button>
+          <button>Log In</button>
         </form>
       </div>
     );
