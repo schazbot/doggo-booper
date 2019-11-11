@@ -18,7 +18,7 @@ class NavBar extends Component {
         <Link style={styling} to="/">Home</Link>
         <Link style={styling} to="/dogs">All Your Dogs</Link>
         <Link style={styling} to="/upload">Upload Some Dogs</Link>
-
+        {this.props.username && <button onClick={this.props.signOut}>Sign Out</button>}
         </>
         );
     }

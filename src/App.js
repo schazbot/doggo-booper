@@ -127,7 +127,7 @@ class App extends Component {
     return (
       <>
         <div className="app-container">
-          <NavBar />
+          <NavBar signOut={this.signOut} username={this.state.username}/>
           <h1>Boop the puppy on the nose</h1>
           <div className="header">
             <Route
