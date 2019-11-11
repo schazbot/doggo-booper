@@ -8,9 +8,7 @@ import UploadWidget from "./components/UploadWidget";
 import AuthForm from "./components/AuthForm";
 import API from "./API";
 
-const DOGAPI = "https://dog.ceo/api/breeds/image/random/4";
 const MYDOGSURL = "http://localhost:3001/dogs/";
-const NAMEURL = "https://api.randomuser.me/";
 
 class App extends Component {
   state = {
@@ -38,25 +36,22 @@ class App extends Component {
   componentDidMount() {
     const token = localStorage.getItem("token");
     if (token) {
-      API.validate().then(console.log)
+      API.validate().then(console.log);
     }
     this.getDogPics();
     this.getMyPups();
   }
 
   getRandomName = () => {
-    return fetch(NAMEURL)
-      .then(resp => resp.json())
-      .then(data =>
-        this.setState({
-          currentDogName: data.results[0].name.first
-        })
-      );
+    API.getName().then(data =>
+      this.setState({
+        currentDogName: data.results[0].name.first
+      })
+    );
   };
 
   getDogPics = () => {
-    return fetch(DOGAPI)
-      .then(resp => resp.json())
+    API.dogPic()
       .then(data =>
         this.setState({
           currentDogPicUrl: data.message[0],
@@ -67,12 +62,11 @@ class App extends Component {
   };
 
   getMyPups = () => {
-    API.get(MYDOGSURL)
-      .then(data =>
-        this.setState({
-          allMyPups: data
-        })
-      );
+    API.get(MYDOGSURL).then(data =>
+      this.setState({
+        allMyPups: data
+      })
+    );
   };
 
   saveDogPics = e => {
@@ -95,17 +89,10 @@ class App extends Component {
       );
   };
 
-  updateDog = pup => {
-    fetch(MYDOGSURL + `${pup.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify({
-        boops: pup.boops++
-      })
-    });
+  updateDog = (pup) => {
+    API.patch(MYDOGSURL, pup.id, {
+      boops: pup.boops++
+    })
   };
 
   deleteDogPic = dog => {
@@ -128,7 +115,7 @@ class App extends Component {
     return (
       <>
         <div className="app-container">
-          <NavBar signOut={this.signOut} username={this.state.username}/>
+          <NavBar signOut={this.signOut} username={this.state.username} />
           <h1>Boop the puppy on the nose</h1>
           <div className="header">
             <Route
