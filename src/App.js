@@ -38,6 +38,7 @@ class App extends Component {
   componentDidMount() {
     const token = localStorage.getItem("token");
     if (token) {
+      API.validate().then(console.log)
     }
     this.getDogPics();
     this.getMyPups();
