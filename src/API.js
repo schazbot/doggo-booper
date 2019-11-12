@@ -46,5 +46,6 @@ export default {
   validate,
   dogPic,
   getName,
-  patch
+  patch,
+  post
 };

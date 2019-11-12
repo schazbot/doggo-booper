@@ -71,28 +71,19 @@ class App extends Component {
 
   saveDogPics = e => {
     e.preventDefault();
-    fetch(MYDOGSURL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify({
-        url: this.state.currentDogPicUrl,
-        name: this.state.currentDogName,
-        user_id: 1
-      })
-    })
-      .then(resp => resp.json())
-      .then(newDoggo =>
-        this.setState({ allMyPups: [...this.state.allMyPups, newDoggo] })
-      );
+    API.post(MYDOGSURL, {
+      url: this.state.currentDogPicUrl,
+      name: this.state.currentDogName,
+      user_id: 1
+    }).then(newDoggo =>
+      this.setState({ allMyPups: [...this.state.allMyPups, newDoggo] })
+    );
   };
 
-  updateDog = (pup) => {
+  updateDog = pup => {
     API.patch(MYDOGSURL, pup.id, {
       boops: pup.boops++
-    })
+    });
   };
 
   deleteDogPic = dog => {

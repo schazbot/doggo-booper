@@ -11,7 +11,7 @@ class AuthForm extends Component {
     this.setState({
       [event.target.name]: event.target.value
     });
-g
+
   handleSubmit = event => {
     event.preventDefault();
     API.signIn(this.state.username, this.state.password)
