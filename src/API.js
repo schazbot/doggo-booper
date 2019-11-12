@@ -1,7 +1,6 @@
 const ENDPOINT = "http://localhost:3001/";
 const dogApiUrl = "https://dog.ceo/api/breeds/image/random/4";
 const nameUrl = "https://api.randomuser.me/";
-const MYDOGSURL = "http://localhost:3001/mydogs/";
 const signInUrl = `${ENDPOINT}signin`;
 const validateUrl = `${ENDPOINT}validate`;
 
@@ -28,7 +27,6 @@ const post = (url, data) => {
 };
 
 const patch = (url, id, data) => {
-    // debugger
   return fetch(url + id, {
     method: "PATCH",
     headers: apiHeaders,
