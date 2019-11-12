@@ -87,7 +87,7 @@ class App extends Component {
   };
 
   deleteDogPic = dog => {
-    fetch(MYDOGSURL + `${dog.id}`, { method: "DELETE" }).then(
+    API.destroy(MYDOGSURL, dog.id).then(
       this.setState({
         allMyPups: this.state.allMyPups.filter(doggo => doggo.id !== dog.id)
       })

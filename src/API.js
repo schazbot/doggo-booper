@@ -34,6 +34,8 @@ const patch = (url, id, data) =>
     body: JSON.stringify(data)
   });
 
+const destroy = (url, id) => fetch(`${url}${id}`, { method: "DELETE" });
+
 const signIn = (username, password) => post(signInUrl, { username, password });
 
 const validate = () => get(validateUrl);
@@ -47,5 +49,6 @@ export default {
   dogPic,
   getName,
   patch,
-  post
+  post,
+  destroy
 };
