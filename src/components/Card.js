@@ -8,7 +8,7 @@ class Card extends Component {
     }
 
     playAudio = () => {
-        this.green.play()
+        this.boop.play()
     }
 
     render() {
@@ -23,7 +23,7 @@ class Card extends Component {
                 <div></div>
                 <button onClick={getDogPics}>Next pupper</button>
                 <div id="boop-div"><h1>{boopStatus}</h1></div>
-                <audio ref={(green) => { this.green = green; }}>
+                <audio ref={(boop) => { this.boop = boop; }}>
                     <source src={audio} type="audio/mpeg" >
                     </source>
                 </audio>
