@@ -5,6 +5,11 @@ const MYDOGSURL = "http://localhost:3001/mydogs/";
 const signInUrl = `${ENDPOINT}signin`;
 const validateUrl = `${ENDPOINT}validate`;
 
+const apiHeaders = {
+  "Content-Type": "application/json",
+  Accept: "application/json"
+};
+
 const getExternal = url => fetch(url).then(resp => resp.json());
 
 const get = url =>
@@ -14,25 +19,22 @@ const get = url =>
     }
   }).then(resp => resp.json());
 
-const post = (url, data) =>
-  fetch(url, {
+const post = (url, data) => {
+  return fetch(url, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json"
-    },
+    headers: apiHeaders,
     body: JSON.stringify(data)
   }).then(resp => resp.json());
+};
 
-const patch = (url, id, data) =>
-  fetch(url + `${id}`, {
+const patch = (url, id, data) => {
+    // debugger
+  return fetch(url + id, {
     method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json"
-    },
+    headers: apiHeaders,
     body: JSON.stringify(data)
-  });
+  }).then(resp => resp.json());
+};
 
 const destroy = (url, id) => fetch(`${url}${id}`, { method: "DELETE" });
 

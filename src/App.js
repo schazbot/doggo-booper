@@ -82,8 +82,15 @@ class App extends Component {
 
   updateDog = pup => {
     API.patch(MYDOGSURL, pup.id, {
-      boops: pup.boops++
-    });
+      //adding the ++ before the variable value returns the new value
+      boops: ++pup.boops
+    }).then(updatedDog =>
+      this.setState({
+        allMyPups: this.state.allMyPups.map(dog =>
+          dog.id === updatedDog.id ? updatedDog : dog
+        )
+      })
+    );
   };
 
   deleteDogPic = dog => {
