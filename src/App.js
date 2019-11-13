@@ -142,7 +142,7 @@ class App extends Component {
                   boopStatus={boopStatus}
                   setBoop={setBoop}
                 />
-                <button onClick={saveDogPics}>save pupper</button>
+                <button class="button" onClick={saveDogPics}>save pupper</button>
               </>
             )}
           />
