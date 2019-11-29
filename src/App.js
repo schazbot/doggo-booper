@@ -25,7 +25,7 @@ class App extends Component {
       username: user.username
     });
     localStorage.setItem("token", user.token);
-    this.props.history.push("/dogs");
+    this.props.history.push("/home");
   };
 
   signOut = () => {
@@ -111,7 +111,8 @@ class App extends Component {
       currentDogName,
       boopStatus,
       currentDogPicUrl,
-      allMyPups
+      allMyPups,
+      username
     } = this.state;
 
     return (
@@ -121,59 +122,64 @@ class App extends Component {
             <NavBar signOut={this.signOut} username={this.state.username} />
             <h1>Boop the puppy on the nose</h1>
           </div>
-          <Route
-            path="/signin"
-            component={routerProps => (
-              <AuthForm
-                {...routerProps}
-                signIn={this.signIn}
-                signOut={this.signOut}
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/"
-            component={routerProps => (
-              <>
-                <Card
+          {!username ? (
+            <Route
+              path="/"
+              component={routerProps => (
+                <AuthForm
                   {...routerProps}
-                  currentDogPicUrl={currentDogPicUrl}
-                  currentDogName={currentDogName}
-                  getDogPics={getDogPics}
-                  boopStatus={boopStatus}
-                  setBoop={setBoop}
+                  signIn={this.signIn}
+                  signOut={this.signOut}
                 />
-                <button class="button" onClick={saveDogPics}>
-                  save pupper
-                </button>
-              </>
-            )}
-          />
-          <Route
-            exact
-            path="/dogs"
-            component={routerProps => (
-              <MyPups
-                {...routerProps}
-                updateDog={updateDog}
-                allMyPups={allMyPups}
-                deleteDogPic={deleteDogPic}
+              )}
+            />
+          ) : (
+            <>
+              <Route
+                exact
+                path="/home"
+                component={routerProps => (
+                  <>
+                    <Card
+                      {...routerProps}
+                      currentDogPicUrl={currentDogPicUrl}
+                      currentDogName={currentDogName}
+                      getDogPics={getDogPics}
+                      boopStatus={boopStatus}
+                      setBoop={setBoop}
+                    />
+                    <button class="button" onClick={saveDogPics}>
+                      save pupper
+                    </button>
+                  </>
+                )}
               />
-            )}
-          />
-          <Route
-            exact
-            path="/upload"
-            component={routerProps => (
-              <>
-                <UploadWidget
-                  {...routerProps}
-                  currentDogName={currentDogName}
-                />
-              </>
-            )}
-          />
+              <Route
+                exact
+                path="/dogs"
+                component={routerProps => (
+                  <MyPups
+                    {...routerProps}
+                    updateDog={updateDog}
+                    allMyPups={allMyPups}
+                    deleteDogPic={deleteDogPic}
+                  />
+                )}
+              />
+              <Route
+                exact
+                path="/upload"
+                component={routerProps => (
+                  <>
+                    <UploadWidget
+                      {...routerProps}
+                      currentDogName={currentDogName}
+                    />
+                  </>
+                )}
+              />
+            </>
+          )}
         </div>
       </>
     );
