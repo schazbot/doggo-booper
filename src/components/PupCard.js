@@ -22,6 +22,7 @@ class PupCard extends Component {
             src={pup.url}
             key={pup.id}
             width="100%"
+            
             alt="doggo pics"
             onClick={() => updateDog(pup)}
           />

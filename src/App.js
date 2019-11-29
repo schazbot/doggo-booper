@@ -3,7 +3,8 @@ import Card from "./components/Card";
 import NavBar from "./components/NavBar";
 import "./App.css";
 import MyPups from "./containers/MyPups";
-import { Route } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
+
 import UploadWidget from "./components/UploadWidget";
 import AuthForm from "./components/AuthForm";
 import API from "./API";
@@ -24,6 +25,7 @@ class App extends Component {
       username: user.username
     });
     localStorage.setItem("token", user.token);
+    this.props.history.push("/dogs");
   };
 
   signOut = () => {
@@ -142,7 +144,9 @@ class App extends Component {
                   boopStatus={boopStatus}
                   setBoop={setBoop}
                 />
-                <button class="button" onClick={saveDogPics}>save pupper</button>
+                <button class="button" onClick={saveDogPics}>
+                  save pupper
+                </button>
               </>
             )}
           />
@@ -175,4 +179,4 @@ class App extends Component {
     );
   }
 }
-export default App;
+export default withRouter(App);

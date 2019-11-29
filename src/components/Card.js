@@ -17,10 +17,10 @@ class Card extends Component {
     return (
       <div className="card">
         <h2>Name: {currentDogName} </h2>
-        <div className="img-div">
+        <div className="main-img-div">
           <img
             src={currentDogPicUrl}
-            width="300px"
+            // width="300px"
             alt="doggo pics"
             onClick={this.playAudio}
           />
