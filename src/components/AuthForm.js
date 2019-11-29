@@ -19,8 +19,7 @@ class AuthForm extends Component {
         // check if we got an error back
         if (data.error) throw Error(data.error);
         // here we know for sure that there was no error
-        this.props.signIn(data);
-        this.props.history.push("/dogs");
+        this.props.signIn(data)
       })
       .catch(error => console.log(error));
   };
