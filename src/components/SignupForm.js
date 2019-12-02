@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import API from "../API";
+import { isProperty } from "@babel/types";
 
 const MYDOGSURL = "http://localhost:3001/dogs/";
 
-class AuthForm extends Component {
+class SignupForm extends Component {
   state = {
     username: "",
     password: ""
@@ -14,20 +15,22 @@ class AuthForm extends Component {
       [event.target.name]: event.target.value
     });
 
-  handleSubmit = event => {
-    event.preventDefault();
-    API.signIn(this.state.username, this.state.password)
-      .then(data => {
-        // check if we got an error back
-        if (data.error) throw Error(data.error);
-        // here we know for sure that there was no error
-        this.props.signIn(data);
-      })
-      .catch(error => console.log(error));
-  };
+  // handleSubmit = event => {
+  //   event.preventDefault();
+  //   API.signIn(this.state.username, this.state.password)
+  //     .then(data => {
+  //       // check if we got an error back
+  //       if (data.error) throw Error(data.error);
+  //       // here we know for sure that there was no error
+  //       this.props.signIn(data);
+  //     })
+  //     .catch(error => console.log(error));
+  // };
 
-  signUp = () => {
-    API.post(MYDOGSURL, this.state).then(user => console.log(user));
+  signUp = event => {
+    event.preventDefault();
+    API.signUp(this.state).then(user => console.log(user));
+    this.props.history.push("/dogs");
   };
 
   render() {
@@ -35,8 +38,8 @@ class AuthForm extends Component {
       <>
         {!this.props.currentUser && (
           <div>
-            <h1>Log In</h1>
-            <form onSubmit={this.handleSubmit}>
+            <h1>Sign Up</h1>
+            <form onSubmit={this.signUp}>
               <label>
                 Username
                 <input
@@ -55,7 +58,7 @@ class AuthForm extends Component {
                   value={this.state.password}
                 />
               </label>
-              <button>Log In</button>
+              <button>Sign Up</button>
             </form>
           </div>
         )}
@@ -64,4 +67,4 @@ class AuthForm extends Component {
   }
 }
 
-export default AuthForm;
+export default SignupForm;

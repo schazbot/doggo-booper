@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Card from "./components/Card";
 import NavBar from "./components/NavBar";
+import SignupForm from "./components/SignupForm";
 import "./App.css";
 import MyPups from "./containers/MyPups";
 import { Route, withRouter } from "react-router-dom";
@@ -17,12 +18,12 @@ class App extends Component {
     currentDogName: "",
     allMyPups: [],
     uploadedDogPic: "",
-    username: ""
+    currentUser: ""
   };
 
   signIn = user => {
     this.setState({
-      username: user.username
+      currentUser: user.username
     });
     localStorage.setItem("token", user.token);
     this.props.history.push("/home");
@@ -30,7 +31,7 @@ class App extends Component {
 
   signOut = () => {
     this.setState({
-      username: ""
+      currentUser: ""
     });
     localStorage.removeItem("token");
   };
@@ -112,27 +113,37 @@ class App extends Component {
       boopStatus,
       currentDogPicUrl,
       allMyPups,
-      username
+      currentUser
     } = this.state;
 
     return (
       <>
         <div className="app-container">
           <div className="header">
-            <NavBar signOut={this.signOut} username={this.state.username} />
+            <NavBar
+              signOut={this.signOut}
+              currentUser={this.state.currentUser}
+            />
             <h1>Boop the puppy on the nose</h1>
           </div>
-          {!username ? (
-            <Route
-              path="/"
-              component={routerProps => (
-                <AuthForm
-                  {...routerProps}
-                  signIn={this.signIn}
-                  signOut={this.signOut}
-                />
-              )}
-            />
+          {!currentUser ? (
+            <>
+              <Route
+                path="/"
+                component={routerProps => (
+                  <AuthForm
+                    {...routerProps}
+                    signIn={this.signIn}
+                    signOut={this.signOut}
+                  />
+                )}
+              />
+              <h2>or</h2>
+              <Route
+                path="/signup"
+                component={routerProps => <SignupForm {...routerProps} />}
+              />
+            </>
           ) : (
             <>
               <Route

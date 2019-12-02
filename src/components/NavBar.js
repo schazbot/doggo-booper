@@ -14,8 +14,14 @@ class NavBar extends Component {
         <Link className="navLink" to="/upload">
           Upload Some Dogs
         </Link>
-        {this.props.username && (
-          <button onClick={this.props.signOut}>Sign Out</button>
+        {this.props.currentUser ? (
+          <Link className="navLink" onClick={this.props.signOut}>
+            Sign Out
+          </Link>
+        ) : (
+          <Link className="navLink" to="/signup">
+            Sign Up
+          </Link>
         )}
       </>
     );
