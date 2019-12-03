@@ -5,7 +5,6 @@ import SignupForm from "./components/SignupForm";
 import "./App.css";
 import MyPups from "./containers/MyPups";
 import { Route, withRouter } from "react-router-dom";
-
 import UploadWidget from "./components/UploadWidget";
 import AuthForm from "./components/AuthForm";
 import API from "./API";
@@ -31,6 +30,7 @@ class App extends Component {
 
   signOut = () => {
     this.setState({
+      allMyPups: [],
       currentUser: ""
     });
     localStorage.removeItem("token");
@@ -39,10 +39,10 @@ class App extends Component {
   componentDidMount() {
     const token = localStorage.getItem("token");
     if (token) {
-      API.validate().then(console.log);
+      API.validate()
+        .then(this.getDogPics())
+        .then(this.getMyPups());
     }
-    this.getDogPics();
-    this.getMyPups();
   }
 
   getRandomName = () => {
@@ -119,11 +119,8 @@ class App extends Component {
     return (
       <>
         <div className="app-container">
+          <NavBar signOut={this.signOut} currentUser={this.state.currentUser} />
           <div className="header">
-            <NavBar
-              signOut={this.signOut}
-              currentUser={this.state.currentUser}
-            />
             <h1>Boop the puppy on the nose</h1>
           </div>
           {!currentUser ? (
@@ -138,7 +135,7 @@ class App extends Component {
                   />
                 )}
               />
-              <h2>or</h2>
+
               <Route
                 path="/signup"
                 component={routerProps => <SignupForm {...routerProps} />}

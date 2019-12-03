@@ -22,7 +22,11 @@ const get = url =>
 const post = (url, data) => {
   return fetch(url, {
     method: "POST",
-    headers: apiHeaders,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: localStorage.getItem("token")
+    },
     body: JSON.stringify(data)
   }).then(resp => resp.json());
 };
@@ -42,7 +46,7 @@ const signIn = (username, password) => post(signInUrl, { username, password });
 const validate = () => get(validateUrl);
 const dogPic = () => getExternal(dogApiUrl);
 const getName = () => getExternal(nameUrl);
-const signUp = (user) => post(signUpUrl, user);
+const signUp = user => post(signUpUrl, user);
 
 export default {
   get,

@@ -26,9 +26,7 @@ class AuthForm extends Component {
       .catch(error => console.log(error));
   };
 
-  signUp = () => {
-    API.post(MYDOGSURL, this.state).then(user => console.log(user));
-  };
+  
 
   render() {
     return (

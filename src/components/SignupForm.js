@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import API from "../API";
-import { isProperty } from "@babel/types";
-
-const MYDOGSURL = "http://localhost:3001/dogs/";
 
 class SignupForm extends Component {
   state = {
@@ -15,22 +12,10 @@ class SignupForm extends Component {
       [event.target.name]: event.target.value
     });
 
-  // handleSubmit = event => {
-  //   event.preventDefault();
-  //   API.signIn(this.state.username, this.state.password)
-  //     .then(data => {
-  //       // check if we got an error back
-  //       if (data.error) throw Error(data.error);
-  //       // here we know for sure that there was no error
-  //       this.props.signIn(data);
-  //     })
-  //     .catch(error => console.log(error));
-  // };
-
+  
   signUp = event => {
     event.preventDefault();
-    API.signUp(this.state).then(user => console.log(user));
-    this.props.history.push("/dogs");
+    API.signUp(this.state).then(this.props.history.push("/dogs"));
   };
 
   render() {
