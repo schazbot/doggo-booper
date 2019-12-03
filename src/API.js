@@ -3,6 +3,7 @@ const dogApiUrl = "https://dog.ceo/api/breeds/image/random/4";
 const nameUrl = "https://api.randomuser.me/";
 const signInUrl = `${ENDPOINT}signin`;
 const validateUrl = `${ENDPOINT}validate`;
+const signUpUrl = `${ENDPOINT}signup`;
 
 const apiHeaders = {
   "Content-Type": "application/json",
@@ -21,7 +22,11 @@ const get = url =>
 const post = (url, data) => {
   return fetch(url, {
     method: "POST",
-    headers: apiHeaders,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: localStorage.getItem("token")
+    },
     body: JSON.stringify(data)
   }).then(resp => resp.json());
 };
@@ -41,6 +46,7 @@ const signIn = (username, password) => post(signInUrl, { username, password });
 const validate = () => get(validateUrl);
 const dogPic = () => getExternal(dogApiUrl);
 const getName = () => getExternal(nameUrl);
+const signUp = user => post(signUpUrl, user);
 
 export default {
   get,
@@ -50,5 +56,6 @@ export default {
   getName,
   patch,
   post,
-  destroy
+  destroy,
+  signUp
 };

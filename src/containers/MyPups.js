@@ -8,14 +8,18 @@ class MyPups extends Component {
       <>
         <h1>All My Pups</h1>
         <div className="pup-grid">
-          {allMyPups.map(pup => (
-            <PupCard
-              key={pup.id}
-              deleteDogPic={deleteDogPic}
-              updateDog={updateDog}
-              pup={pup}
-            />
-          ))}
+          {allMyPups ? (
+            allMyPups.map(pup => (
+              <PupCard
+                key={pup.id}
+                deleteDogPic={deleteDogPic}
+                updateDog={updateDog}
+                pup={pup}
+              />
+            ))
+          ) : (
+            <h1>Save some puppies!</h1>
+          )}
         </div>
       </>
     );

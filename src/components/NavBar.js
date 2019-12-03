@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 class NavBar extends Component {
   render() {
     return (
-      <>
-        <Link className="navLink" to="/">
+      <nav class="nav-bar">
+        <Link className="navLink" to="/home">
           Home
         </Link>
         <Link className="navLink" to="/dogs">
@@ -14,10 +14,16 @@ class NavBar extends Component {
         <Link className="navLink" to="/upload">
           Upload Some Dogs
         </Link>
-        {this.props.username && (
-          <button onClick={this.props.signOut}>Sign Out</button>
+        {this.props.currentUser ? (
+          <Link className="navLink" onClick={this.props.signOut}>
+            Sign Out
+          </Link>
+        ) : (
+          <Link className="navLink" to="/signup">
+            Sign Up
+          </Link>
         )}
-      </>
+      </nav>
     );
   }
 }
